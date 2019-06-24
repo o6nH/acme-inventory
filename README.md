@@ -196,7 +196,7 @@ Create a `.babelrc` file
 >{
 >  "name": "acme-inventory",
 >  "version": "1.0.0",
->  "description": "practice with react, express, >and sequelize",
+>  "description": "practice with react, express, and sequelize",
 >  "main": "index.js",
 >  "scripts": {
 >    "webpack:dev": "webpack --mode=development --watch",

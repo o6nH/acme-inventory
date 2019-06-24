@@ -199,12 +199,12 @@ Create a `.babelrc` file
 >  "description": "practice with react, express, >and sequelize",
 >  "main": "index.js",
 >  "scripts": {
->    "webpack:dev": "webpack --mode=development >--watch",
->    "start:dev": "nodemon src/server --ignore dist >--ignore src & npm run webpack:dev"
+>    "webpack:dev": "webpack --mode=development --watch",
+>    "start:dev": "nodemon src/server --ignore dist --ignore src & npm run webpack:dev"
 >  },
 >  "repository": {
 >    "type": "git",
->    "url": "git+https://github.com/o6nH/>acme-inventory.git"
+>    "url": "git+https://github.com/o6nH/acme-inventory.git"
 >  },
 >  "keywords": [
 >    "react",
@@ -217,9 +217,9 @@ Create a `.babelrc` file
 >  "author": "Hugo Campos",
 >  "license": "ISC",
 >  "bugs": {
->    "url": "https://github.com/o6nH/acme-inventory/>issues"
+>    "url": "https://github.com/o6nH/acme-inventory/issues"
 >  },
->  "homepage": "https://github.com/o6nH/>acme-inventory#readme",
+>  "homepage": "https://github.com/o6nH/acme-inventory#readme",
 >  "dependencies": {
 >    "express": "^4.17.1",
 >    "pg": "^7.11.0",
@@ -227,7 +227,7 @@ Create a `.babelrc` file
 >  },
 >  "devDependencies": {
 >    "@babel/core": "^7.4.5",
->    "@babel/plugin-proposal-class-properties": >"^7.4.4",
+>    "@babel/plugin-proposal-class-properties": "^7.4.4",
 >    "@babel/preset-react": "^7.0.0",
 >    "babel-loader": "^8.0.6",
 >    "babel-polyfill": "^6.26.0",

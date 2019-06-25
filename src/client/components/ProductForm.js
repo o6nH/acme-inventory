@@ -6,24 +6,16 @@ export default class ProductForm extends Component {
     super(props);
     this.state = {
     }
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(event, product){
-    console.log('event.target: ',event.target);
-    console.dir(event.target);
-    
-  };
-
   render(){
-    const {product, statusOptions} = this.props
+    const {product, statusOptions, handleChange} = this.props
     const {id, name, status} = product;
-    const {onChange} = this;
     return (
       <div id={id}>
         <span>{name} </span>
         <form>
-          <select name={name} defaultValue={status} onChange={(ev) => onChange(ev, product)}>
+          <select name={name} defaultValue={status} onChange={(ev) => handleChange(ev, id)}>
             {
               statusOptions.map((statusOption, index) => <option key={index} value={statusOption}>{statusOption}</option>)
             }

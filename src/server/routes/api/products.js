@@ -26,17 +26,29 @@ router.put('/products/:id', async (req, res, next) => {
       }
     });
 
-    //Specify object of attributes, .save will only run those in fields
-    product.update({status: req.body.status}, {fields:['status']})
-
-    res.status(201).send(product);
+    
+    //Specify the object of attributes to update, .save will only run those in fields
+    const newStatus = req.body.status;
+    const allowedStatuses = Products.rawAttributes.status.values;
+    //console.log(newStatus, allowedStatuses);
+    
+    if(allowedStatuses.includes(newStatus)){
+      product.update({status: newStatus}, {fields:['status']});
+      res.status(201).send(product);
+    } else {
+      throw `Error: The status of the product provided can only be one of the following: ${allowedStatuses}`
+    }
   }
   catch(err) {
+    console.error(err);
+    //Why is res not sent????
     res.status(304).send(`
-      <div>
-        <h2>Cannot find products:</h2>
-        ${err}
-      </div>
+      <html>
+        <div>
+          <h2>Cannot find products:</h2>
+          ${err}
+        </div>
+      </html>
     `)
   }
 });

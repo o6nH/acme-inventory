@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 export default function Navbar ({statusesCounts, statusOptions}) {//{}, []
   //2.1//4.1
   if (statusesCounts) {
-    const counts = statusOptions.map(status => statusesCounts[status]);
+    const counts = statusOptions.map(status => statusesCounts[status] || 0);
     const allProductsCount = counts.reduce((total,count)=>total+count, 0)
     return (
       <div>

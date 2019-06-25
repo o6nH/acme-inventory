@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductForm from './ProductForm';
 
-export default function ProductsList({match, products, statusOptions}) {
+export default function ProductsList({match, products, statusOptions, handleChange}) {
   //4.2
   const status = match.params.status || 'All';
   const showing = status === 'All' ? products : 
@@ -10,7 +10,7 @@ export default function ProductsList({match, products, statusOptions}) {
   return (
     <div>
       {
-       showing.map(product => <ProductForm key={product.id} product={product} statusOptions={statusOptions}/>)
+       showing.map(product => <ProductForm key={product.id} product={product} statusOptions={statusOptions}handleChange={handleChange} />)
       }
     </div>
   )

@@ -15,9 +15,10 @@ export default class App extends Component {
       statusesCounts: {}
     }
     this.getStateInfo = this.getStateInfo.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  getStatusesCounts(products){
+  getStatusesCounts(products) {
     return products.reduce( (counts, {status}) => {
       if(counts[status]) {
         counts[status]++;
@@ -28,17 +29,28 @@ export default class App extends Component {
     }, {})
   }
 
-  getStateInfo(products = this.state.products){
+  getStateInfo(products = this.state.products) {
+    const statusOptions = ['Stocked', 'Backordered', 'Discontinued']//[] //[prodName1, ...] //HOW DO WE GET ENUMS from DATABASE???
     const statusesCounts = this.getStatusesCounts(products);//{} //{prodName1:count1, ...}
-    const statusOptions = Object.keys(statusesCounts);//[] //[prodName1, ...]
     return {statusesCounts, statusOptions}
   }
 
-  //3
-  async componentDidMount() {
+  async fetchProducts() {
     const {data: products} = await axios.get('/api/products');
     const {statusOptions, statusesCounts} = this.getStateInfo(products);
     this.setState({products, statusOptions, statusesCounts});
+  }
+  
+  async handleChange(event, id) {//event.target.value
+    await axios.put(`/api/products/${id}`, {
+      "status": event.target.value
+    });
+    this.fetchProducts();
+  }
+
+  //3
+  componentDidMount() {
+    this.fetchProducts();
   }
 
   //2.0//4
@@ -46,9 +58,9 @@ export default class App extends Component {
     const {products, statusesCounts, statusOptions} = this.state; //{{}, []}
     return (
       <HashRouter>
-        <Route path="/" render={() => <Navbar statusesCounts={statusesCounts} statusOptions={statusOptions}/>} />
+        <Route path="/" render={() => <Navbar statusesCounts={statusesCounts} statusOptions={statusOptions}/>}/>
         <Route path="/:status?" 
-          render={({match}) => <ProductsList match={match} products={products} statusOptions={statusOptions}></ProductsList>}
+          render={({match}) => <ProductsList match={match} products={products} statusOptions={statusOptions} handleChange={this.handleChange}></ProductsList>}
         />
       </HashRouter>
     )

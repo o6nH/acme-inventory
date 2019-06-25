@@ -404,3 +404,16 @@ npm i react-router-dom, axios
 
 Use `HashRouter`, `Route`, and `Link` from `react-router` to navigate components. Then use `axios` to get data from `src/server/routes/api`.
 
+# Running the Program
+Because I did not find a way to translate the `command_1 & command_2` format of a `script` in `package.json` to something functional in **Windows' PowerShell**, run two shells; each shell should run one of the following commands in order to:
+-  watch for changes in the `src/client` files and continuously bundle them for `dist`  
+> ```bash
+> # Shell_1
+> npm run webpack:dev
+> ```
+and
+- run a server with `src/server` files:
+> ```bash
+> # Shell_2
+> npm run start:dev
+> ```

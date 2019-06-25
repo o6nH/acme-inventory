@@ -100,7 +100,7 @@ app.use('/api', require('./routes/api/products'));
 
 // Static Middleware
 // Serves dist/index.html
-app.get('/', express.static(path.join(__dirname, '../../dist')));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 // Sync DB then Express Listens 
 db.sync()
@@ -395,6 +395,12 @@ const root = document.getElementById('root');
 ReactDOM.render(<App />, root);
 ```
 
-## Build React App and Its Components
+## Build React `App.js` and Its Components
+Install `react-router-dom` and `axios`.
 
-Import `react` and `axios` into the `App.js file`
+```bash
+npm i react-router-dom, axios
+```
+
+Use `HashRouter`, `Route`, and `Link` from `react-router` to navigate components. Then use `axios` to get data from `src/server/routes/api`.
+

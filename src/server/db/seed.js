@@ -2,11 +2,11 @@ const dbConn = require('.');//dbConn instead of just db to emphasize dbConn.sync
 const Products = require('./models/Products');
 
 const products = [
-  {name: 'things'}, 
-  {name: 'stuff', status: 'discontinued'}, 
-  {name: 'whatsits'}, 
-  {name: 'dinguses'}, 
-  {name: 'items', status: 'backordered'}];
+  {name: 'Things'}, 
+  {name: 'Stuff', status: 'Discontinued'}, 
+  {name: 'Whatsits'}, 
+  {name: 'Dinguses'}, 
+  {name: 'Items', status: 'Backordered'}];
 
 const seed = async () => {
   try {

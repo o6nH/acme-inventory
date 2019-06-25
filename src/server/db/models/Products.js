@@ -10,8 +10,8 @@ const Products = db.define('product', {
     }
   }, 
   status: {
-    type: Sequelize.ENUM('stocked', 'backordered', 'discontinued'),
-    defaultValue: 'stocked'
+    type: Sequelize.ENUM('Stocked', 'Backordered', 'Discontinued'),
+    defaultValue: 'Stocked'
   }
 });
 

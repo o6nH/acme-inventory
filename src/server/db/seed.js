@@ -6,7 +6,7 @@ const products = [
   {name: 'stuff', status: 'discontinued'}, 
   {name: 'whatsits'}, 
   {name: 'dinguses'}, 
-  {name: 'items', status: 'backorder'}];
+  {name: 'items', status: 'backordered'}];
 
 const seed = async () => {
   try {

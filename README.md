@@ -69,6 +69,9 @@ db.authenticate()
 
 module.exports = db;
 ```
+> [!WARNING] **RE: GIT** 
+> Exclude both `node_modules` and `src/server/db/pass.js` from the **git repo**.
+> Add these to the `.gitignore` before commiting.
 
 ## Express Server and Routes
 Express will handle HTTP requests as shown here:
@@ -108,7 +111,7 @@ db.sync()
     });
   });
 ```
-### API Routes
+### Basic API Routes
 Routes may redirect to pages or an api. Here the routes are a part handle api calls.
 
 ```javascript
@@ -246,4 +249,152 @@ Create a `.babelrc` file
 >```
 >
 
-## Initialize Git
+## Create Tables/Models in PostgreSQL Database
+Define a **schema** for the **models/tables** that will be added to our database above (*[`inventory`](#PostgreSQL-Server-Connection-with-Sequelize)*); use the Sequelize instance method `define()` built-in to the new Sequelize connection (`db`) established above. Include the model name and attributes with their options (like type and validation).
+
+```javascript
+const Sequelize = require('sequelize');
+const db = require('..');
+
+const Products = db.define('product', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  }, 
+  status: {
+    type: Sequelize.ENUM('instock', 'backorder', 'discontinued'),
+    defaultValue: 'instock'
+  }
+});
+
+module.exports = Products;
+```
+
+## Sync and Seed Data
+With `DBInstance.sync({force:true})`, force the database connection to **drop old data tables/models** and synchronize with the *models* that were programmatically defined and imported.
+
+Afterwards, **seed** the programmatically defined values to the database by mapping each values/objects to a static model method `Model.create(value)`, which creates records in our table.
+
+```javascript
+const dbConn = require('.');//dbConn instead of just db to emphasize dbConn.sync() and dbConn.close()
+const Products = require('./models/Products')
+
+const products = [
+  {name: 'things'}, 
+  {name: 'stuff', status: 'discontinued'}, 
+  {name: 'whatsits'}, 
+  {name: 'dinguses'}, 
+  {name: 'items', status: 'backorder'}];
+
+const seed = async () => {
+  try {
+    //DROP TABLE IF EXISTS, then sync all models
+    //(i.e., drop 'products' table, then use const Products = db.defined('products, {...}) 
+    // in `./models/Products` file)
+    await dbConn.sync({force: true});
+
+    //Model.build(values) and Model.save() by using Model.create(value)
+    await Promise.all(products.map(products => Products.create(products)));
+
+    dbConn.close();
+  } catch(err) {
+    console.error('Could not seed products!', err);
+    dbConn.close();
+  }
+};
+
+seed();
+```
+
+## Query Database with Updated API Routes
+Use read methods for the models/tables `Model.find___({where: {name: val}})`. This in SQL would be:
+```sql
+SELECT * FROM Model WHERE name = 'value';
+```
+
+Embedded in Javascript, we see `async/await`s:
+
+```javascript
+const express = require('express');
+const router = express.Router();
+const Products = require('../../db/models/Products');
+
+module.exports = router;
+
+router.get('/products', async (req, res, next) => {
+  try{
+    res.send(await Products.findAll());
+  }
+  catch (err) {
+    res.status(404).send(`
+      <div>
+        <h2>Cannot find products:</h2>
+        ${err}
+      </div>
+    `)
+  }
+});
+
+router.put('/products/:id', async (req, res, next) => {
+  try {
+    const product = await Products.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    //Specify object of attributes, .save will only run those in fields
+    product.update({status: req.body.status}, {fields:['status']})
+
+    res.status(201).send(product);
+  }
+  catch(err) {
+    res.status(304).send(`
+      <div>
+        <h2>Cannot find products:</h2>
+        ${err}
+      </div>
+    `)
+  }
+});
+```
+
+# Frontend Setup
+In `src/client` include an `index.html` and `index.js` files.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ACME Inventory</title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
+```
+
+> [!NOTE] The `index.js` file is the **entry** point for Webpack and included in the `webpack.config.js` file. By default `index.js` is found directly under the `src` folder, not `src/client`.
+
+## Update Webpack Entry with React Component
+Update the `src/client/index.js`, which is Webpack's entry point, with the main React component, `src/client/components/App.js`.
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+
+const root = document.getElementById('root');
+
+ReactDOM.render(<App />, root);
+```
+
+## Build React App and Its Components
+
+Import `react` and `axios` into the `App.js file`

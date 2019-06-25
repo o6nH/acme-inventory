@@ -4,6 +4,7 @@
   "description": "practice with react, express, and sequelize",
   "main": "index.js",
   "scripts": {
+    "seed": "node src/server/db/seed.js",
     "webpack:dev": "webpack --mode=development --watch",
     "start:dev": "nodemon src/server --ignore dist --ignore src & npm run webpack:dev"
   },

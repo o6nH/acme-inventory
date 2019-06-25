@@ -20,7 +20,7 @@ app.use('/api', require('./routes/api/products'));
 
 // Static Middleware
 // Serves dist/index.html
-app.get('/', express.static(path.join(__dirname, '../../src/client')));
+app.get('/', express.static(path.join(__dirname, '../../dist/')));
 
 // Sync DB then Express Listens 
 db.sync()

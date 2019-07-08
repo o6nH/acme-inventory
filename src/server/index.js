@@ -15,12 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Routes
-app.use('/api', require('./routes/api/products'));
-
 // Static Middleware
 // Serves dist/index.html
 app.use(express.static(path.join(__dirname, '../../dist/')));
+
+//Routes
+app.use('/api', require('./routes/api/products'));
 
 // Sync DB then Express Listens 
 db.sync()

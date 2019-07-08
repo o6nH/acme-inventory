@@ -27,7 +27,7 @@ router.put('/products/:id', async (req, res, next) => {
     });
 
     
-    //Specify the object of attributes to update, .save will only run those in fields
+    //Specify the object of attributes to update, .save will only save for those in fields
     const newStatus = req.body.status;
     const allowedStatuses = Products.rawAttributes.status.values;
     //console.log(newStatus, allowedStatuses);
